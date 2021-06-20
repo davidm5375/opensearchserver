@@ -20,6 +20,7 @@ import com.qwazr.utils.IOUtils;
 import graphql.ExecutionInput;
 import graphql.ExecutionResult;
 import graphql.GraphQL;
+import graphql.scalars.ExtendedScalars;
 import graphql.schema.DataFetcher;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
@@ -55,7 +56,7 @@ public class GraphQLService {
         }
 
         // Build the graphql wiring
-        final RuntimeWiring.Builder runtimeWiring = RuntimeWiring.newRuntimeWiring();
+        final RuntimeWiring.Builder runtimeWiring = RuntimeWiring.newRuntimeWiring().scalar(ExtendedScalars.GraphQLLong);
         dataFetcherMap.forEach((type, dataFetchers) -> {
             final TypeRuntimeWiring.Builder typeWiring = TypeRuntimeWiring.newTypeWiring(type);
             dataFetchers.forEach(typeWiring::dataFetcher);
@@ -81,4 +82,5 @@ public class GraphQLService {
     public interface DataFetcherProvider {
         Map<String, Map<String, DataFetcher<?>>> getDataFetchers();
     }
+
 }
